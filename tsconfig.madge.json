@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@effect/parser": ["./packages/parser/build/esm/index.js"],
+      "@effect/parser/test/*": ["./packages/parser/build/test/*"],
+      "@effect/parser/examples/*": ["./packages/parser/build/examples/*"],
+      "@effect/parser/*": ["./packages/parser/build/esm/*"]
+    }
+  },
+  "include": [
+    "./packages/parser/build/esm/**/*.js",
+    "./packages/parser/build/test/**/*.js",
+    "./packages/parser/build/examples/**/*.js"
+  ]
+}
