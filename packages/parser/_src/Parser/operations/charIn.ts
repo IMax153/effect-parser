@@ -4,6 +4,9 @@
  *
  * @tsplus static effect/parser/Parser.Ops charIn
  */
-export function charIn(...chars: Array<string>): Parser<string, string, string> {
-  return Parser.regexChar(Regex.charIn(...chars), `not one of the expected characters (${chars.join(", ")})`)
+export function charIn(chars: string): Parser<string, string, string> {
+  return Parser.regexChar(
+    Regex.charIn(chars),
+    `not one of the expected characters (${chars.split("").join(", ")})`
+  )
 }

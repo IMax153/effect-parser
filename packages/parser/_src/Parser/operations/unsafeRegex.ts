@@ -7,6 +7,6 @@ import { ParseRegex } from "@effect/parser/Parser/definition/primitives"
  *
  * @tsplus static effect/parser/Parser.Ops unsafeRegex
  */
-export function unsafeRegex<Error>(regex: Regex): Parser<never, string, Chunk<string>> {
+export function unsafeRegex(regex: Regex): Parser<never, string, Chunk<string>> {
   return new ParseRegex(regex, Option.none)
 }

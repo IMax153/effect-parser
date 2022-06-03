@@ -1,5 +1,5 @@
 /**
- * @tsplus fluent effect/parser/Parser addFailedBranch
+ * @tsplus fluent effect/parser/ParserError addFailedBranch
  */
 export function addFailedBranch_<Error, Error2>(
   self: ParserError<Error>,
@@ -9,6 +9,6 @@ export function addFailedBranch_<Error, Error2>(
 }
 
 /**
- * @tsplus static effect/parser/Parser.Aspects addFailedBranch
+ * @tsplus static effect/parser/ParserError.Aspects addFailedBranch
  */
 export const addFailedBranch = Pipeable(addFailedBranch_)

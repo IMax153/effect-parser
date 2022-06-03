@@ -1,3 +1,7 @@
+import type { OptimizerState } from "@effect/parser/Parser/_internal/OptimizerState"
+import type { ParserState } from "@effect/parser/Parser/_internal/ParserState"
+import type { ParserImplementation, ParserImplementationOps } from "@effect/parser/Parser/definition/implementation"
+
 export const ParserErrorSym = Symbol.for("@effect/parser/Parser/Error")
 export type ParserErrorSym = typeof ParserErrorSym
 
@@ -37,14 +41,20 @@ export interface Parser<Error, Input, Result> {
   readonly [ParserResultSym]: () => Result
 }
 
+export declare namespace Parser {
+  export type Implementation = ParserImplementation
+}
+
 /**
  * @tsplus type effect/parser/Parser.Ops
  */
 export interface ParserOps {
   readonly $: ParserAspects
+  readonly Implementation: ParserImplementationOps
 }
 export const Parser: ParserOps = {
-  $: {}
+  $: {},
+  Implementation: {}
 }
 
 /**
@@ -69,4 +79,8 @@ export abstract class BaseParser<Error, Input, Result> implements Parser<Error, 
   readonly [ParserErrorSym]!: () => Error
   readonly [ParserInputSym]!: (input: Input) => void
   readonly [ParserResultSym]!: () => Result
+  abstract needsBacktrack: boolean
+  abstract optimizeNode(state: OptimizerState): Parser<Error, Input, Result>
+  abstract stripNode(state: OptimizerState): Parser<Error, Input, Result>
+  abstract parseRecursive(state: ParserState): Result
 }

@@ -142,7 +142,7 @@ describe.concurrent("Regex", () => {
     })
 
     it("oneOf", () => {
-      const compiled = Regex.charIn("a", "b").compile()
+      const compiled = Regex.charIn("ab").compile()
 
       assert.isTrue(compiled.matches("a"))
       assert.isTrue(compiled.matches("b"))
@@ -150,7 +150,7 @@ describe.concurrent("Regex", () => {
     })
 
     it("noneOf", () => {
-      const compiled = Regex.charNotIn("a", "b").compile()
+      const compiled = Regex.charNotIn("ab").compile()
 
       assert.isFalse(compiled.matches("a"))
       assert.isFalse(compiled.matches("b"))
@@ -191,7 +191,7 @@ describe.concurrent("Regex", () => {
     })
 
     it("and (&)", () => {
-      const compiled = (Regex.charIn("a", "b", "c") & Regex.charIn("b")).compile()
+      const compiled = (Regex.charIn("abc") & Regex.charIn("b")).compile()
 
       assert.strictEqual(compiled.test(0, "a"), Regex.NotMatched)
       assert.strictEqual(compiled.test(0, "b"), 1)
@@ -239,7 +239,7 @@ describe.concurrent("Regex", () => {
 
   describe("end of stream", () => {
     it("oneOf(a, b)", () => {
-      assert.strictEqual(Regex.charIn("a", "b").compile().test(0, ""), Regex.NeedMoreInput)
+      assert.strictEqual(Regex.charIn("ab").compile().test(0, ""), Regex.NeedMoreInput)
     })
 
     it("oneOf(a)", () => {

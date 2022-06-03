@@ -5,6 +5,6 @@ import { OneOf } from "@effect/parser/Regex/definition"
  *
  * @tsplus static effect/parser/Regex.Ops charIn
  */
-export function charIn(...chars: Array<string>): Regex {
-  return new OneOf(BitSet(chars.map((char) => char.charCodeAt(0))))
+export function charIn(chars: string): Regex {
+  return new OneOf(BitSet(chars.split("").map((char) => char.charCodeAt(0))))
 }

@@ -9,5 +9,5 @@ const characters = Chunk.range("\u0000".charCodeAt(0), "￿".charCodeAt(0)).map(
 export function filter<A extends string>(f: Refinement<string, A>): Regex
 export function filter(f: Predicate<string>): Regex
 export function filter(f: Predicate<string>): Regex {
-  return Regex.charIn(...characters.filter(f))
+  return Regex.charIn(characters.filter(f).join(""))
 }
