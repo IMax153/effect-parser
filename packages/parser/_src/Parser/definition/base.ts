@@ -2,13 +2,13 @@ import type { OptimizerState } from "@effect/parser/Parser/_internal/OptimizerSt
 import type { ParserState } from "@effect/parser/Parser/_internal/ParserState"
 import type { ParserImplementation, ParserImplementationOps } from "@effect/parser/Parser/definition/implementation"
 
-export const ParserErrorSym = Symbol.for("@effect/parser/Parser/Error")
+export const ParserErrorSym = Symbol.for("@effect/parser/Parser.Error")
 export type ParserErrorSym = typeof ParserErrorSym
 
-export const ParserInputSym = Symbol.for("@effect/parser/Parser/Input")
+export const ParserInputSym = Symbol.for("@effect/parser/Parser.Input")
 export type ParserInputSym = typeof ParserInputSym
 
-export const ParserResultSym = Symbol.for("@effect/parser/Parser/Result")
+export const ParserResultSym = Symbol.for("@effect/parser/Parser.Result")
 export type ParserResultSym = typeof ParserResultSym
 
 /**

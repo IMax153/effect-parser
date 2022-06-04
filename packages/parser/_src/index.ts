@@ -1,4 +1,6 @@
 export * as bitset from "@effect/parser/BitSet"
 export * as parser from "@effect/parser/Parser"
 export * as parserError from "@effect/parser/ParserError"
+export * as printer from "@effect/parser/Printer"
 export * as regex from "@effect/parser/Regex"
+export * as syntax from "@effect/parser/Syntax"

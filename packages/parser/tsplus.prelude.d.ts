@@ -16,4 +16,16 @@ import { ParserError } from "@effect/parser/ParserError/definition"
 /**
  * @tsplus global
  */
+import { Printer } from "@effect/parser/Printer/definition/base"
+/**
+ * @tsplus global
+ */
 import { Regex } from "@effect/parser/Regex/definition"
+/**
+ * @tsplus global
+ */
+import { Syntax } from "@effect/parser/Syntax/definition"
+/**
+ * @tsplus global
+ */
+import { Target } from "@effect/parser/Target/definition"
