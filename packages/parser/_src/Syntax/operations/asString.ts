@@ -4,8 +4,8 @@
  *
  * @tsplus fluent effect/parser/Syntax asString
  */
-export function asString<Error>(
-  self: Syntax<Error, string, string, string>
+export function asString<Error, Output, Value>(
+  self: Syntax<Error, string, Output, Value>
 ): Syntax<Error, string, string, string> {
   return Syntax(
     self.asParser.asString(),

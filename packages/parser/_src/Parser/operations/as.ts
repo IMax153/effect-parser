@@ -6,9 +6,9 @@
  */
 export function as_<Error, Input, Result, Result2>(
   self: Parser<Error, Input, Result>,
-  result: Result2
+  result: LazyArg<Result2>
 ): Parser<Error, Input, Result2> {
-  return self.map(() => result)
+  return self.map(result)
 }
 
 /**

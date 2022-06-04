@@ -32,16 +32,16 @@ const chessMoveSyntax = chessCoordSyntax
     (move) => Tuple(move.from, move.to)
   )
 
-const chessGameSyntax = chessMoveSyntax
+export const chessGameSyntax = chessMoveSyntax
   .repeatWithSep(Syntax.whitespace.asUnit("\n"))
   .transform(
     (moves) => new ChessGame([...moves]),
     (game) => Chunk.from(game.moves)
   )
 
-const game = `|E8 -> A1
-              |E2 -> B8
-              |C7 -> A2`.stripMargin()
+export const game = `|E8 -> A1
+                     |E2 -> B8
+                     |C7 -> A2`.stripMargin()
 
 export const example = new ChessGame([
   new ChessMove(new ChessCoord("E", 8), new ChessCoord("A", 1)),
@@ -51,8 +51,12 @@ export const example = new ChessGame([
 
 const printed = chessGameSyntax.printString(example)
 
+console.log("\nPrinted")
+console.log("======")
 console.log(printed.right().value)
 
 const parsed = chessGameSyntax.parseString(game)
 
+console.log("\nParsed")
+console.log("======")
 console.log(util.inspect(parsed, { depth: null, colors: true }))

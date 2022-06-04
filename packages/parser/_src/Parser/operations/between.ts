@@ -4,10 +4,10 @@
  *
  * @tsplus fluent effect/parser/Parser between
  */
-export function between_<Error, Input, Result, Error2, Input2, Result2, Error3, Input3, Result3>(
+export function between_<Error, Input, Result, Error2, Input2, Error3, Input3>(
   self: Parser<Error, Input, Result>,
-  left: Parser<Error2, Input2, Result2>,
-  right: Parser<Error3, Input3, Result3>
+  left: Parser<Error2, Input2, void>,
+  right: Parser<Error3, Input3, void>
 ): Parser<Error | Error2 | Error3, Input & Input2 & Input3, Result> {
   return (left + self + right).map(({ tuple: [_, b, __] }) => b as Result)
 }

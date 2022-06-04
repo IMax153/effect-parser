@@ -1,7 +1,7 @@
 import { BasePrinter } from "@effect/parser/Printer/definition/base"
 import type { MergeTuple } from "@tsplus/stdlib/data/Tuple"
 
-export type Unzip<A> = A extends Tuple<[...infer TA, infer TB]> ? Tuple<[...TA, TB]> : Tuple<[undefined, A]>
+export type Unzip<A> = A extends Tuple<[...infer TA, infer TB]> ? Tuple<[...TA, TB]> : Tuple<[void, A]>
 
 export class Lazy<Error, Output, Value> extends BasePrinter<Error, Output, Value> {
   readonly _tag = "Lazy"

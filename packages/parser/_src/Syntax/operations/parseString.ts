@@ -7,7 +7,7 @@
  * @tsplus fluent effect/parser/Syntax parseString
  */
 export function parseString_<Error, Output, Value>(
-  self: Syntax<Error, string, Output, Value>,
+  self: Syntax<Error, any, Output, Value>,
   input: string,
   implementation: Parser.Implementation = Parser.Implementation.Recursive
 ): Either<ParserError<Error>, Value> {
@@ -27,6 +27,6 @@ export function parseString(
   implementation: Parser.Implementation = Parser.Implementation.Recursive
 ) {
   return <Error, Output, Value>(
-    self: Syntax<Error, string, Output, Value>
+    self: Syntax<Error, any, Output, Value>
   ): Either<ParserError<Error>, Value> => self.parseString(input, implementation)
 }

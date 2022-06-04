@@ -2,6 +2,7 @@
 export * from "@effect/parser/Syntax/operations/alphaNumeric"
 export * from "@effect/parser/Syntax/operations/anyChar"
 export * from "@effect/parser/Syntax/operations/anyString"
+export * from "@effect/parser/Syntax/operations/as"
 export * from "@effect/parser/Syntax/operations/asPrinted"
 export * from "@effect/parser/Syntax/operations/asString"
 export * from "@effect/parser/Syntax/operations/asUnit"

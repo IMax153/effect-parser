@@ -4,7 +4,7 @@ import { Lazy, Zip } from "@effect/parser/Printer/definition/primitives"
 function unmerge<A>(_a: A): Unzip<A> {
   // @ts-expect-error
   return Tuple.isTuple(_a) ?
-    Tuple(..._a.tuple.slice(0, _a.tuple.length - 1), _a.tuple.slice(_a.tuple.length - 1)) :
+    Tuple(..._a.tuple.slice(0, _a.tuple.length - 1), _a.tuple[_a.tuple.length - 1]) :
     Tuple(undefined, _a)
 }
 

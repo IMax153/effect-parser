@@ -226,12 +226,10 @@ class PrinterInterpreter<Error, Output, Value> {
         }
         case "ZipLeft": {
           const oldInput = this.input
-          const valueA = this.input
           const valueB = undefined
           const left = this.current.left
           const right = this.current.right
           this.current = instruction(left)
-          this.input = valueA
           const k1: Cont = (leftResult) => {
             switch (leftResult._tag) {
               case "Left": {
@@ -257,12 +255,11 @@ class PrinterInterpreter<Error, Output, Value> {
         }
         case "ZipRight": {
           const oldInput = this.input
-          const valueA = undefined
           const valueB = this.input
           const left = this.current.left
           const right = this.current.right
           this.current = instruction(left)
-          this.input = valueA
+          this.input = undefined
           const k1: Cont = (leftResult) => {
             switch (leftResult._tag) {
               case "Left": {

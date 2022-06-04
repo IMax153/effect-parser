@@ -49,9 +49,11 @@ export function unifyParserError<X extends ParserError<any>>(
  *
  * @tsplus type effect/parser/ParserError.Failure
  */
-export class Failure<Error> {
+export class Failure<Error> implements Equals {
   readonly _tag = "Failure"
+
   readonly [ParserErrorSym]: ParserErrorSym = ParserErrorSym
+
   constructor(
     /**
      * Stack of named parsers until reaching the failure.
@@ -66,6 +68,24 @@ export class Failure<Error> {
      */
     readonly failure: Error
   ) {}
+
+  [Hash.sym](): number {
+    return Hash.combine(
+      Hash.string(this._tag),
+      Hash.combine(
+        Hash.unknown(this.nameStack),
+        Hash.combine(Hash.number(this.position), Hash.unknown(this.failure))
+      )
+    )
+  }
+
+  [Equals.sym](that: unknown): boolean {
+    return ParserError.is(that) &&
+      that.isFailure() &&
+      this.nameStack == that.nameStack &&
+      this.position === that.position &&
+      Equals.equals(this.failure, that.failure)
+  }
 }
 
 /**
@@ -76,9 +96,11 @@ export class Failure<Error> {
  *
  * @tsplus type effect/parser/ParserError.UnknownFailure
  */
-export class UnknownFailure {
+export class UnknownFailure implements Equals {
   readonly _tag = "UnknownFailure"
+
   readonly [ParserErrorSym]: ParserErrorSym = ParserErrorSym
+
   constructor(
     /**
      * Stack of named parsers until reaching the failure.
@@ -89,6 +111,23 @@ export class UnknownFailure {
      */
     readonly position: number
   ) {}
+
+  [Hash.sym](): number {
+    return Hash.combine(
+      Hash.string(this._tag),
+      Hash.combine(
+        Hash.unknown(this.nameStack),
+        Hash.number(this.position)
+      )
+    )
+  }
+
+  [Equals.sym](that: unknown): boolean {
+    return ParserError.is(that) &&
+      that.isUnknownFailure() &&
+      this.nameStack == that.nameStack &&
+      this.position === that.position
+  }
 }
 
 /**
@@ -97,9 +136,18 @@ export class UnknownFailure {
  *
  * @tsplus type effect/parser/ParserError.UnexpectedEndOfInput
  */
-export class UnexpectedEndOfInput {
+export class UnexpectedEndOfInput implements Equals {
   readonly _tag = "UnexpectedEndOfInput"
-  readonly [ParserErrorSym]: ParserErrorSym = ParserErrorSym
+
+  readonly [ParserErrorSym]: ParserErrorSym = ParserErrorSym;
+
+  [Hash.sym](): number {
+    return Hash.string(this._tag)
+  }
+
+  [Equals.sym](that: unknown): boolean {
+    return ParserError.is(that) && that.isUnexpectedEndOfInput()
+  }
 }
 
 /**
@@ -108,15 +156,30 @@ export class UnexpectedEndOfInput {
  *
  * @tsplus type effect/parser/ParserError.NotConsumedAll
  */
-export class NotConsumedAll<Error> {
+export class NotConsumedAll<Error> implements Equals {
   readonly _tag = "NotConsumedAll"
+
   readonly [ParserErrorSym]: ParserErrorSym = ParserErrorSym
+
   constructor(
     /**
      * The last encountered failure, if any.
      */
     readonly lastFailure: Option<ParserError<Error>>
   ) {}
+
+  [Hash.sym](): number {
+    return Hash.combine(
+      Hash.string(this._tag),
+      Hash.unknown(this.lastFailure)
+    )
+  }
+
+  [Equals.sym](that: unknown): boolean {
+    return ParserError.is(that) &&
+      that.isNotConsumedAll() &&
+      this.lastFailure == that.lastFailure
+  }
 }
 
 /**
@@ -127,13 +190,32 @@ export class NotConsumedAll<Error> {
  *
  * @tsplus type effect/parser/ParserError.NotConsumedAll
  */
-export class AllBranchesFailed<Error> {
+export class AllBranchesFailed<Error> implements Equals {
   readonly _tag = "AllBranchesFailed"
+
   readonly [ParserErrorSym]: ParserErrorSym = ParserErrorSym
+
   constructor(
     readonly left: ParserError<Error>,
     readonly right: ParserError<Error>
   ) {}
+
+  [Hash.sym](): number {
+    return Hash.combine(
+      Hash.string(this._tag),
+      Hash.combine(
+        Hash.unknown(this.left),
+        Hash.unknown(this.right)
+      )
+    )
+  }
+
+  [Equals.sym](that: unknown): boolean {
+    return ParserError.is(that) &&
+      that.isAllBranchesFailed() &&
+      this.left == that.left &&
+      this.right == that.right
+  }
 }
 
 /**

@@ -4,6 +4,6 @@
  *
  * @tsplus static effect/parser/Syntax.Ops succeed
  */
-export function succeed<Value>(value: Value): Syntax<never, unknown, never, Value> {
+export function succeed<Value>(value: Value): Syntax<never, any, never, Value> {
   return Syntax(Parser.succeed(value), Printer.succeed(value))
 }

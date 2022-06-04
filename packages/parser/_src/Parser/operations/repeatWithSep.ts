@@ -4,9 +4,9 @@
  *
  * @tsplus fluent effect/parser/Parser repeatWithSep
  */
-export function repeatWithSep_<Error, Input, Result, Error2, Input2, Result2>(
+export function repeatWithSep_<Error, Input, Result, Error2, Input2>(
   self: Parser<Error, Input, Result>,
-  sep: Parser<Error2, Input2, Result2>
+  sep: Parser<Error2, Input2, void>
 ): Parser<Error | Error2, Input & Input2, Chunk<Result>> {
   return self.zip(sep.zipRight(self).repeat0()).map(({ tuple: [head, tail] }) => tail.prepend(head))
 }
