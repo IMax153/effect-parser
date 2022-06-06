@@ -14,8 +14,7 @@ export function parseString<Error, Result>(
 ): Either<ParserError<Error>, Result> {
   switch (parserImplementation._tag) {
     case "StackSafe": {
-      //
-      return Either.right(void 0) as any
+      return self.parseStackSafe(input)
     }
     case "Recursive": {
       const state = new ParserState(input)
