@@ -201,16 +201,16 @@ export class ParseRegex<Error> extends BaseParser<Error, string, Chunk<string>> 
     if (result === Regex.NeedMoreInput) {
       state.error = ParserError.UnexpectedEndOfInput
       return undefined as unknown as Chunk<string>
-    } else if (result === Regex.NotMatched) {
+    }
+    if (result === Regex.NotMatched) {
       state.error = this.getFailure(position, state.nameStack)
       return undefined as unknown as Chunk<string>
-    } else {
-      state.position = result
-      if (!state.discard) {
-        return Chunk.from(state.source.slice(position, result).split(""))
-      }
-      return undefined as unknown as Chunk<string>
     }
+    state.position = result
+    if (!state.discard) {
+      return Chunk.from(state.source.slice(position, result).split(""))
+    }
+    return undefined as unknown as Chunk<string>
   }
 
   private getFailure(position: number, nameStack: List<string>): ParserError<Error> {
@@ -252,16 +252,16 @@ export class ParseRegexLastChar<Error> extends BaseParser<Error, string, string>
     if (result === Regex.NeedMoreInput) {
       state.error = ParserError.UnexpectedEndOfInput
       return undefined as unknown as string
-    } else if (result === Regex.NotMatched) {
+    }
+    if (result === Regex.NotMatched) {
       state.error = this.getFailure(position, state.nameStack)
       return undefined as unknown as string
-    } else {
-      state.position = result
-      if (!state.discard) {
-        return state.source[result - 1]!
-      }
-      return undefined as unknown as string
     }
+    state.position = result
+    if (!state.discard) {
+      return state.source[result - 1]!
+    }
+    return undefined as unknown as string
   }
 
   private getFailure(position: number, nameStack: List<string>): ParserError<Error> {
@@ -708,7 +708,7 @@ export class OrElse<Error, Error2, Input, Input2, Result, Result2>
     if (state.error == null) {
       return leftResult
     }
-    if (state.position == startPosition) {
+    if (state.position === startPosition) {
       const leftFailure = state.error
       state.error = undefined
       const rightResult = instruction(this.right).parseRecursive(state)
@@ -741,6 +741,7 @@ export class Optional<Error, Input, Result> extends BaseParser<Error, Input, Opt
   }
 
   parseRecursive(state: ParserState): Option<Result> {
+    console.log(this.parser)
     const startPos = state.position
     const result = instruction(this.parser).parseRecursive(state)
     if (state.error == null) {

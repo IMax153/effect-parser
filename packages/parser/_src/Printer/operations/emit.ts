@@ -4,5 +4,5 @@
  * @tsplus static effect/parser/Printer.Ops emit
  */
 export function emit<Output>(value: Output): Printer<string, Output, void> {
-  return Printer.exactly(value).apply(value)
+  return Printer.exactly(value).provide(value)
 }

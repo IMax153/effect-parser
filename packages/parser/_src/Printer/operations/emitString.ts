@@ -4,5 +4,5 @@
  * @tsplus static effect/parser/Printer.Ops emitString
  */
 export function emitString(str: string): Printer<never, string, unknown> {
-  return Printer.anyString.apply(str)
+  return Printer.anyString.provide(str)
 }
