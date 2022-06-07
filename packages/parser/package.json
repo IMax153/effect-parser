@@ -33,11 +33,14 @@
       "import": "./build/esm/*.js"
     }
   },
+  "dependencies": {
+    "@effect/core": "^0.0.3"
+  },
   "config": {
     "side": [],
-    "modules": []
-  },
-  "dependencies": {
-    "@effect/core": "^0.0.2"
+    "modules": [],
+    "global": [
+      "_src/global.d.ts"
+    ]
   }
 }

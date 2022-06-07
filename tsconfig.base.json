@@ -44,5 +44,6 @@
     }
   },
   "include": [],
-  "exclude": ["node_modules", "build", "lib"]
+  "exclude": ["node_modules", "build", "lib"],
+  "files": ["./packages/parser/_src/global.d.ts"]
 }

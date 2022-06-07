@@ -55,7 +55,7 @@ console.log("\nPrinted")
 console.log("======")
 console.log(printed.right().value)
 
-const parsed = chessGameSyntax.parseString(game, Parser.Implementation.StackSafe)
+const parsed = chessGameSyntax.parseString(game)
 
 console.log("\nParsed")
 console.log("======")

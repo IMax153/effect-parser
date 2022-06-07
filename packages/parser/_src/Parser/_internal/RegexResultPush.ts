@@ -32,7 +32,7 @@ export const matchedChunk: RegexResultPush = {
  * @tsplus static effect/parser/Parser/RegexResultPush.Ops SingleChar
  */
 export const singleChar: RegexResultPush = {
-  _tag: "MatchedChunk"
+  _tag: "SingleChar"
 }
 
 /**

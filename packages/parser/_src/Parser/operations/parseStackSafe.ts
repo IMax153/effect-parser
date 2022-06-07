@@ -1,6 +1,7 @@
 import type { ParserOp } from "@effect/parser/Parser/_internal/ParserOp"
 import type { InitialParser } from "@effect/parser/Parser/operations/compile"
 import type { ChunkBuilder } from "@tsplus/stdlib/collections/Chunk"
+// import * as util from "util"
 
 /**
  * @tsplus fluent effect/parser/Parser parseStackSafe
@@ -23,8 +24,17 @@ function parseStackSafeInternal(
 ): Either<ParserError<unknown>, unknown> {
   // Operation Stack: the next operation is returned to the main loop as a
   // return value, further operations are stacked here
-  let opStack: Stack<ParserOp> | undefined = undefined
+  // console.log(util.inspect(parser.initialStack, { depth: 10, colors: true }))
+  let opStack: Stack<ParserOp> | undefined = parser.initialStack
   let op: ParserOp | undefined = parser.op
+  // if (initialOpStack != null) {
+  //   opStack = new Stack(initialOpStack.value, initialOpStack.previous)
+  //   while (initialOpStack.previous != null) {
+  //     opStack = new Stack(initialOpStack.previous.value, opStack)
+  //     initialOpStack = initialOpStack.previous
+  //   }
+  // }
+  // console.log(util.inspect(opStack, { depth: 10, colors: true }))
   // Result stacks and explicit variables for the top two results. If success
   // is undefined, a failure value must be pushed. If success is not undefined,
   // failure is not pushed The lastSuccess and lastFailure variables are either
@@ -76,19 +86,49 @@ function parseStackSafeInternal(
     return undefined
   }
 
+  function pushSuccessResult(result: unknown): void {
+    successResultStack = new Stack(result, successResultStack)
+  }
+
+  function popSuccessResult(): unknown | undefined {
+    if (successResultStack != null) {
+      const value = successResultStack.value
+      successResultStack = successResultStack.previous
+      return value
+    }
+    return undefined
+  }
+
+  function pushFailedResult(result: ParserError<unknown>): void {
+    failedResultStack = new Stack(result, failedResultStack)
+  }
+
+  function popFailedResult(): ParserError<unknown> | undefined {
+    if (failedResultStack != null) {
+      const value = failedResultStack.value
+      failedResultStack = failedResultStack.previous
+      return value
+    }
+    return undefined
+  }
+
   while (op != null) {
     if (op.needsEmptyResultSlot()) {
       if (lastSuccess2 != null) {
-        successResultStack = new Stack(lastSuccess2, successResultStack)
+        pushSuccessResult(lastSuccess2)
       } else if (lastFailure2 != null) {
-        successResultStack = new Stack(undefined, successResultStack)
-        failedResultStack = new Stack(lastFailure2, failedResultStack)
+        pushSuccessResult(undefined)
+        pushFailedResult(lastFailure2)
       }
       lastSuccess2 = lastSuccess1
       lastFailure2 = lastFailure1
       lastSuccess1 = undefined
       lastFailure1 = undefined
     }
+
+    console.log(op._tag)
+    console.log("Last Success 1: ", JSON.stringify(lastSuccess1))
+    console.log("Last Success 2: ", JSON.stringify(lastSuccess2))
 
     switch (op._tag) {
       case "PushOp2": {
@@ -160,7 +200,7 @@ function parseStackSafeInternal(
           lastSuccess1 = undefined
           lastFailure1 = ParserError.NotConsumedAll(Option.none)
         } else {
-          lastSuccess1 = undefined
+          lastSuccess1 = undefined // {}
           lastFailure1 = undefined
         }
         op = popOp()
@@ -250,7 +290,7 @@ function parseStackSafeInternal(
               break
             }
             case "Ignored": {
-              lastSuccess1 = undefined
+              lastSuccess1 = undefined // {}
               break
             }
           }
@@ -301,6 +341,7 @@ function parseStackSafeInternal(
       }
 
       case "TransformLast2Results": {
+        console.log("Strategy: ", op.strategy._tag)
         if (
           lastSuccess1 != null &&
           (
@@ -335,19 +376,9 @@ function parseStackSafeInternal(
           }
           lastSuccess1 = undefined
         }
-        if (successResultStack != null) {
-          lastSuccess2 = successResultStack.value
-          successResultStack = successResultStack.previous
-        } else {
-          lastSuccess2 = undefined
-        }
+        lastSuccess2 = popSuccessResult()
         if (lastSuccess2 == null) {
-          if (failedResultStack != null) {
-            lastFailure2 = failedResultStack.value
-            failedResultStack = failedResultStack.previous
-          } else {
-            lastFailure2 = undefined
-          }
+          lastFailure2 = popFailedResult()
         } else {
           lastFailure2 = undefined
         }
@@ -377,19 +408,9 @@ function parseStackSafeInternal(
           // Pop result stack start...
           lastSuccess1 = lastSuccess2
           lastFailure1 = lastFailure2
-          if (successResultStack != null) {
-            lastSuccess2 = successResultStack.value
-            successResultStack = successResultStack.previous
-          } else {
-            lastSuccess2 = undefined
-          }
+          lastSuccess2 = popSuccessResult()
           if (lastSuccess2 == null) {
-            if (failedResultStack != null) {
-              lastFailure2 = failedResultStack.value
-              failedResultStack = failedResultStack.previous
-            } else {
-              lastFailure2 = undefined
-            }
+            lastFailure2 = popFailedResult()
           } else {
             lastFailure2 = undefined
           }
@@ -402,7 +423,7 @@ function parseStackSafeInternal(
       }
 
       case "SkipOnFailure2": {
-        if (lastSuccess1 == null) {
+        if (lastSuccess1 == null && lastFailure1 != null) {
           popOp()
           popOp()
         }
@@ -451,19 +472,9 @@ function parseStackSafeInternal(
           // Pop result stack start..
           lastSuccess1 = lastSuccess2
           lastFailure1 = lastFailure2
-          if (successResultStack != null) {
-            lastSuccess2 = successResultStack.value
-            successResultStack = successResultStack.previous
-          } else {
-            lastSuccess2 = undefined
-          }
+          lastSuccess2 = popSuccessResult()
           if (lastSuccess2 == null) {
-            if (failedResultStack != null) {
-              lastFailure2 = failedResultStack.value
-              failedResultStack = failedResultStack.previous
-            } else {
-              lastFailure2 = undefined
-            }
+            lastFailure2 = popFailedResult()
           } else {
             lastFailure2 = undefined
           }

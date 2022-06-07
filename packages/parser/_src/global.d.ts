@@ -1,5 +1,5 @@
 import "@effect/parser"
-import "@tsplus/stdlib-global"
+import "@tsplus/stdlib/global"
 
 /**
  * @tsplus global
